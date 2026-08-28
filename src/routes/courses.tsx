@@ -19,6 +19,7 @@ import hero3 from "@/assets/hero-3.png";
 import hero4 from "@/assets/hero-4.png";
 import { apiClient } from "@/lib/api/client";
 import { EnrollmentModal } from "@/components/site/EnrollmentModal";
+import { CourseThumb } from "@/components/site/CourseThumb";
 import { useAuth } from "@/contexts/AuthContext";
 
 // Type definitions
@@ -340,8 +341,6 @@ function CoursesPage() {
 
           <div className="mt-8 grid gap-8 md:grid-cols-2 lg:grid-cols-3">
             {filtered.map((course, i) => {
-              const img = course.thumbnail || course.image || fallbackImages[i % fallbackImages.length];
-
               return (
                 <Reveal key={course.id || i} delay={i * 0.04}>
                   <article
@@ -349,18 +348,13 @@ function CoursesPage() {
                     className="group bg-white rounded-sm overflow-hidden border border-border hover:border-accent/40 transition-all hover:shadow-md h-full flex flex-col cursor-pointer"
                   >
                     <div className="relative aspect-[16/10] overflow-hidden">
-                      <img
-                        src={img}
-                        alt={course.title}
-                        width={800}
-                        height={500}
-                        loading="lazy"
-                        decoding="async"
-                        className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
-                        onError={(e) => {
-                          (e.target as HTMLImageElement).src =
-                            fallbackImages[i % fallbackImages.length];
-                        }}
+                      <CourseThumb
+                        variant={getCategory(course).toLowerCase()}
+                        color={course.color}
+                        thumbnail={course.thumbnail || course.image}
+                        title={course.title}
+                        className="h-full"
+                        fallbackSrc={fallbackImages[i % fallbackImages.length]}
                       />
                       <div className="absolute top-4 right-4 text-[10px] uppercase tracking-widest bg-primary/90 text-white px-3 py-1 rounded-sm">
                         {getCategory(course)}

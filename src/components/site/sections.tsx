@@ -1,5 +1,6 @@
 // src/components/site/sections.tsx
-import { useState, useEffect } from "react";
+import { useQuery } from "@tanstack/react-query";
+import { useEffect, useState } from "react";
 import { Link } from "@tanstack/react-router";
 import { motion } from "framer-motion";
 import {
@@ -25,6 +26,7 @@ import {
 } from "lucide-react";
 import { Reveal } from "./Reveal";
 import { Counter } from "./Counter";
+import { CourseThumb } from "./CourseThumb";
 import { apiClient } from "@/lib/api/client";
 import aboutImg from "@/assets/about.jpg";
 import hero1 from "@/assets/hero-1.jpg";
@@ -97,29 +99,18 @@ const handleEnrollClick = (e: React.MouseEvent) => {
 
 // FeaturedPrograms component - API only
 export function FeaturedPrograms() {
-  const [programs, setPrograms] = useState<Program[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
-
-  useEffect(() => {
-    const fetchPrograms = async () => {
-      try {
-        setLoading(true);
-        setError(null);
-        const response = await apiClient<any>("/courses/");
-        console.log("Featured programs API response:", response);
-        const results = response?.results || [];
-        setPrograms(results.slice(0, 6));
-      } catch (err) {
-        console.error("Failed to fetch programs:", err);
-        setError("Unable to load featured programs");
-        setPrograms([]);
-      } finally {
-        setLoading(false);
-      }
-    };
-    fetchPrograms();
-  }, []);
+  const {
+    data: programs = [],
+    isPending: loading,
+    isError,
+  } = useQuery({
+    queryKey: ["featured-programs"],
+    queryFn: async ({ signal }) => {
+      const response = await apiClient<{ results?: Program[] }>("/courses/", { signal });
+      return (response.results ?? []).slice(0, 6);
+    },
+  });
+  const error = isError ? "Unable to load featured programs" : null;
 
   if (loading) {
     return (
@@ -170,7 +161,6 @@ export function FeaturedPrograms() {
 
         <div className="mt-16 grid gap-8 md:grid-cols-2 lg:grid-cols-3">
           {programs.map((p, i) => {
-            const img = p.thumbnail || p.image || fallbackImages[i % fallbackImages.length];
             return (
               <Reveal key={p.id || p.title} delay={i * 0.05}>
                 <article
@@ -178,18 +168,13 @@ export function FeaturedPrograms() {
                   className="group bg-white rounded-sm overflow-hidden border border-border hover:border-accent/40 transition-all hover:shadow-md h-full flex flex-col cursor-pointer"
                 >
                   <div className="relative aspect-[16/10] overflow-hidden">
-                    <img
-                      src={img}
-                      alt={p.title}
-                      width={800}
-                      height={500}
-                      loading="lazy"
-                      decoding="async"
-                      className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
-                      onError={(e) => {
-                        (e.target as HTMLImageElement).src =
-                          fallbackImages[i % fallbackImages.length];
-                      }}
+                    <CourseThumb
+                      variant={getString(p.category).toLowerCase()}
+                      color={p.color}
+                      thumbnail={p.thumbnail || p.image}
+                      title={p.title}
+                      className="h-full"
+                      fallbackSrc={fallbackImages[i % fallbackImages.length]}
                     />
                     <div className="absolute top-4 right-4 text-[10px] uppercase tracking-widest bg-primary/90 text-white px-3 py-1 rounded-sm">
                       {getString(p.category)}

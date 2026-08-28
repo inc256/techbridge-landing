@@ -11,7 +11,7 @@ import hero6 from "@/assets/hero-6.jpg";
 import hero7 from "@/assets/hero-7.jpg";
 import hero8 from "@/assets/hero-8.jpg";
 
-const slides = [hero1, hero2, hero3, hero4, hero5, hero6, hero7, hero8];
+const slides = [hero7, hero2, hero3, hero4, hero5, hero6, hero8, hero1];
 
 export function Hero() {
   const [i, setI] = useState(0);

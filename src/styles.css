@@ -5,10 +5,10 @@
 @custom-variant dark (&:is(.dark *));
 
 @theme {
-  --font-display: "Space Grotesk", sans-serif;
-  --font-serif: "Playfair Display", serif;
-  --font-sans: "Inter", sans-serif;
-  --font-ui: "Ubuntu", sans-serif;
+  --font-display: "Trebuchet MS", sans-serif;
+  --font-serif: Georgia, serif;
+  --font-sans: "Segoe UI", sans-serif;
+  --font-ui: "Trebuchet MS", sans-serif;
 }
 
 /*
