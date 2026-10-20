@@ -2,14 +2,14 @@ import { useEffect, useState } from "react";
 import { Link } from "@tanstack/react-router";
 import { motion, AnimatePresence } from "framer-motion";
 import { ArrowRight, ChevronDown } from "lucide-react";
-import hero1 from "@/assets/hero-1.jpg";
-import hero2 from "@/assets/hero-2.png";
-import hero3 from "@/assets/hero-3.png";
-import hero4 from "@/assets/hero-4.png";
-import hero5 from "@/assets/hero-5.jpg";
-import hero6 from "@/assets/hero-6.jpg";
-import hero7 from "@/assets/hero-7.jpg";
-import hero8 from "@/assets/hero-8.jpg";
+import hero1 from "@/assets/hero-1.webp";
+import hero2 from "@/assets/hero-2.webp";
+import hero3 from "@/assets/hero-3.webp";
+import hero4 from "@/assets/hero-4.webp";
+import hero5 from "@/assets/hero-5.webp";
+import hero6 from "@/assets/hero-6.webp";
+import hero7 from "@/assets/hero-7.webp";
+import hero8 from "@/assets/hero-8.webp";
 
 const slides = [hero7, hero2, hero3, hero4, hero5, hero6, hero8, hero1];
 
@@ -19,6 +19,11 @@ export function Hero() {
     const id = setInterval(() => setI((v) => (v + 1) % slides.length), 6000);
     return () => clearInterval(id);
   }, []);
+
+  useEffect(() => {
+    const nextSlide = new Image();
+    nextSlide.src = slides[(i + 1) % slides.length];
+  }, [i]);
 
   return (
     <section className="relative h-dvh min-h-[640px] w-full overflow-hidden text-white">
@@ -33,11 +38,11 @@ export function Hero() {
             height={1080}
             loading={i === 0 ? "eager" : "lazy"}
             decoding="async"
-            className="absolute inset-0 h-full w-full object-cover animate-kenburns"
+            className="absolute inset-0 h-full w-full object-cover"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            transition={{ duration: 1.6, ease: "easeInOut" }}
+            transition={{ duration: 1.2, ease: "easeInOut" }}
             fetchPriority={i === 0 ? "high" : "auto"}
           />
         </AnimatePresence>

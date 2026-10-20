@@ -13,10 +13,10 @@ import {
   RefreshCw,
   UserPlus,
 } from "lucide-react";
-import hero1 from "@/assets/hero-1.jpg";
-import hero2 from "@/assets/hero-2.png";
-import hero3 from "@/assets/hero-3.png";
-import hero4 from "@/assets/hero-4.png";
+import hero1 from "@/assets/hero-1.webp";
+import hero2 from "@/assets/hero-2.webp";
+import hero3 from "@/assets/hero-3.webp";
+import hero4 from "@/assets/hero-4.webp";
 import { apiClient } from "@/lib/api/client";
 import { EnrollmentModal } from "@/components/site/EnrollmentModal";
 import { CourseThumb } from "@/components/site/CourseThumb";

@@ -3,7 +3,7 @@ import { Cpu, Mail, Phone, Twitter, Linkedin, Instagram, Facebook } from "lucide
 
 export function Footer() {
   return (
-    <footer className="bg-primary text-white/80">
+    <footer className="bg-deep-green text-white/80">
       <div className="container-x py-12 md:py-16 grid gap-8 md:grid-cols-3">
         <div className="md:col-span-1">
           <div className="flex items-center gap-2">

@@ -29,10 +29,10 @@ import { Counter } from "./Counter";
 import { CourseThumb } from "./CourseThumb";
 import { apiClient } from "@/lib/api/client";
 import aboutImg from "@/assets/about.jpg";
-import hero1 from "@/assets/hero-1.jpg";
-import hero2 from "@/assets/hero-2.png";
-import hero3 from "@/assets/hero-3.png";
-import hero4 from "@/assets/hero-4.png";
+import hero1 from "@/assets/hero-1.webp";
+import hero2 from "@/assets/hero-2.webp";
+import hero3 from "@/assets/hero-3.webp";
+import hero4 from "@/assets/hero-4.webp";
 
 // Types
 interface Program {
@@ -116,9 +116,28 @@ export function FeaturedPrograms() {
     return (
       <section className="py-24 md:py-32 bg-[color:var(--surface)]">
         <div className="container-x">
-          <div className="text-center py-16">
-            <Loader2 className="h-12 w-12 animate-spin text-accent mx-auto" />
-            <p className="mt-4 text-muted-foreground">Loading programs...</p>
+          <div className="max-w-2xl">
+            <span className="eyebrow">Featured Programs</span>
+            <h2 className="mt-4 text-4xl md:text-5xl font-semibold text-primary leading-[1.05]">
+              Programs built with industry, taught by practitioners.
+            </h2>
+          </div>
+          <div
+            role="status"
+            aria-live="polite"
+            className="mt-16 grid gap-8 md:grid-cols-2 lg:grid-cols-3"
+          >
+            <span className="sr-only">Loading featured programs</span>
+            {Array.from({ length: 6 }, (_, i) => (
+              <div key={i} className="overflow-hidden rounded-sm border border-border bg-white">
+                <div className="aspect-[16/10] animate-pulse bg-muted" />
+                <div className="space-y-4 p-7">
+                  <div className="h-3 w-1/3 animate-pulse rounded bg-muted" />
+                  <div className="h-6 w-3/4 animate-pulse rounded bg-muted" />
+                  <div className="h-16 animate-pulse rounded bg-muted" />
+                </div>
+              </div>
+            ))}
           </div>
         </div>
       </section>
@@ -590,6 +609,7 @@ export function Gallery() {
                   height={500}
                   loading="lazy"
                   decoding="async"
+                  fetchPriority="low"
                   className="h-full w-full object-cover transition-transform duration-700 hover:scale-110"
                 />
               </div>
@@ -735,10 +755,12 @@ export function ContactCTA() {
         aria-hidden="true"
         width={1920}
         height={1080}
+        loading="lazy"
         decoding="async"
+        fetchPriority="low"
         className="absolute inset-0 h-full w-full object-cover"
       />
-      <div className="absolute inset-0 bg-primary/85" />
+      <div className="absolute inset-0 bg-deep-green/90" />
       <div className="relative container-x text-center text-white">
         <Reveal>
           <span className="eyebrow" style={{ color: "oklch(0.75 0.15 262)" }}>

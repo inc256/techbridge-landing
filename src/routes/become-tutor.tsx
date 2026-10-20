@@ -13,7 +13,7 @@ import {
   MessageSquare,
   Star,
 } from "lucide-react";
-import hero1 from "@/assets/hero-1.jpg";
+import hero1 from "@/assets/hero-1.webp";
 
 export const Route = createFileRoute("/become-tutor")({
   head: () => ({
