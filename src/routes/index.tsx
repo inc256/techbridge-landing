@@ -39,6 +39,7 @@ function Home() {
   return (
     <SiteLayout>
       <Hero />
+      <WhyChoose />
       <FeaturedPrograms />
       {/* <Gallery /> */}
       <ContactCTA />

@@ -48,7 +48,7 @@ export function Navbar({ forceSolid = false }: { forceSolid?: boolean }) {
             <Link
               key={l.to}
               to={l.to}
-              className={`text-sm transition-colors ${solid ? "text-primary hover:text-accent" : "text-white/90 hover:text-white"}`}
+              className={`text-sm transition-colors ${solid ? "text-primary hover:text-accent" : "text-[#1E293B] hover:text-[#2F6B3F]"}`}
               activeProps={{ className: "font-semibold" }}
               activeOptions={{ exact: l.to === "/" }}
             >
@@ -57,7 +57,7 @@ export function Navbar({ forceSolid = false }: { forceSolid?: boolean }) {
           ))}
           <Link
             to="/become-tutor"
-            className={`text-sm transition-colors ${solid ? "text-primary hover:text-accent" : "text-white/90 hover:text-white"}`}
+            className={`text-sm transition-colors ${solid ? "text-primary hover:text-accent" : "text-[#1E293B] hover:text-[#2F6B3F]"}`}
           >
             Teach with us
           </Link>
@@ -95,11 +95,7 @@ export function Navbar({ forceSolid = false }: { forceSolid?: boolean }) {
           ) : (
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
-                <Button
-                  variant="default"
-                  size="sm"
-                  className="btn-primary"
-                >
+                <Button variant="default" size="sm" className="btn-primary">
                   Apply Now
                 </Button>
               </DropdownMenuTrigger>
@@ -116,7 +112,7 @@ export function Navbar({ forceSolid = false }: { forceSolid?: boolean }) {
         </div>
 
         <button
-          className={`md:hidden grid place-items-center h-10 w-10 rounded-md ${solid ? "text-primary" : "text-white"}`}
+          className={`md:hidden grid place-items-center h-10 w-10 rounded-md text-primary`}
           onClick={() => setOpen((v) => !v)}
           aria-label={open ? "Close menu" : "Open menu"}
         >
@@ -154,20 +150,10 @@ export function Navbar({ forceSolid = false }: { forceSolid?: boolean }) {
           <div className="py-3 text-primary text-base border-b border-border/60">
             <div className="text-xs text-muted-foreground mb-2">Apply Now</div>
             <div className="flex flex-col gap-2">
-              <Button
-                variant="outline"
-                size="sm"
-                asChild
-                onClick={() => setOpen(false)}
-              >
+              <Button variant="outline" size="sm" asChild onClick={() => setOpen(false)}>
                 <Link to="/student-signup">Student signup</Link>
               </Button>
-              <Button
-                variant="outline"
-                size="sm"
-                asChild
-                onClick={() => setOpen(false)}
-              >
+              <Button variant="outline" size="sm" asChild onClick={() => setOpen(false)}>
                 <Link to="/tutor-signup">Tutor signup</Link>
               </Button>
             </div>

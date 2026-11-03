@@ -12,10 +12,7 @@ import {
   Cloud,
   Smartphone,
   Award,
-  Users,
   GraduationCap,
-  Building2,
-  Lightbulb,
   Clock,
   Star,
   ChevronRight,
@@ -324,24 +321,9 @@ export function WhyChoose() {
       desc: "Learn from active engineers, designers, and researchers.",
     },
     {
-      icon: Lightbulb,
-      title: "Hands-on Learning",
-      desc: "Projects, labs, and real client work — not just lectures.",
-    },
-    {
       icon: Award,
       title: "Industry Certifications",
       desc: "Graduate with credentials employers actually recognize.",
-    },
-    {
-      icon: Users,
-      title: "Career Guidance",
-      desc: "Dedicated coaches, interview prep, and hiring partners.",
-    },
-    {
-      icon: Building2,
-      title: "Innovation Labs",
-      desc: "State-of-the-art facilities for robotics, AI, and cloud.",
     },
     {
       icon: Clock,
@@ -363,10 +345,7 @@ export function WhyChoose() {
         <div className="mt-16 grid gap-x-10 gap-y-14 md:grid-cols-2 lg:grid-cols-3">
           {whyItems.map((f, i) => (
             <Reveal key={f.title} delay={i * 0.05}>
-              <div 
-                onClick={handleCardClick}
-                className="group cursor-pointer"
-              >
+              <div className="group">
                 <div className="h-12 w-12 grid place-items-center rounded-sm bg-[color:var(--surface)] text-accent group-hover:bg-accent group-hover:text-white transition-colors">
                   <f.icon className="h-5 w-5" />
                 </div>
