@@ -92,7 +92,7 @@ const featuredPrograms: FeaturedProgram[] = [
     tutorName: "Dr. Sarah Jenkins",
     image: hero1,
     category: "Data Science",
-    price: 49,
+    price: 49000,
     lessons: 24,
     students: "1.2k",
   },
@@ -112,7 +112,7 @@ const featuredPrograms: FeaturedProgram[] = [
     tutorName: "Elena Rodriguez",
     image: hero3,
     category: "Web Development",
-    price: 39,
+    price: 39000,
     lessons: 42,
     students: "850",
   },
@@ -176,7 +176,7 @@ export function FeaturedPrograms() {
                         isFree ? "bg-[#3B82F6] shadow-blue-500/40" : "bg-[#4CAF50] shadow-green-500/40"
                       }`}
                     >
-                      {isFree ? "Free" : `$${course.price}`}
+                      {isFree ? "Free" : `UGX ${course.price}`}
                     </span>
                   </div>
 

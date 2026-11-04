@@ -112,7 +112,7 @@ const demoCourses: Course[] = [
     category: "Data Science",
     duration: "12 weeks",
     students: 1200,
-    price: 49,
+    price: 49000,
     image: hero1,
     thumbnail: null,
     color: "#2F7F43",
@@ -142,7 +142,7 @@ const demoCourses: Course[] = [
     category: "Web Development",
     duration: "16 weeks",
     students: 850,
-    price: 39,
+    price: 39000,
     image: hero3,
     thumbnail: null,
     color: "#2196F3",
@@ -157,7 +157,7 @@ const demoCourses: Course[] = [
     category: "Infrastructure",
     duration: "10 weeks",
     students: 2100,
-    price: 35,
+    price: 35000,
     image: hero4,
     thumbnail: null,
     color: "#FF9800",
@@ -305,7 +305,7 @@ function CoursesPage() {
                             : "bg-[#4CAF50] shadow-green-500/40"
                         }`}
                       >
-                        {isFree ? "Free" : `$${course.price} one-time`}
+                        {isFree ? "Free" : `UGX ${course.price}`}
                       </span>
                     </div>
 
