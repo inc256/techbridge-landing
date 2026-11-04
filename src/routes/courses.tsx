@@ -1,64 +1,31 @@
 // src/routes/courses.tsx
 import { createFileRoute } from "@tanstack/react-router";
-import { useState, useMemo, useEffect } from "react";
+import { useState, useMemo } from "react";
 import { SiteLayout } from "@/components/site/SiteLayout";
-import { PageHeader } from "@/components/site/PageHeader";
 import { Reveal } from "@/components/site/Reveal";
 import { ContactCTA } from "@/components/site/sections";
-import {
-  Search,
-  Clock,
-  Loader2,
-  AlertCircle,
-  RefreshCw,
-  UserPlus,
-} from "lucide-react";
-import hero1 from "@/assets/hero-1.webp";
-import hero2 from "@/assets/hero-2.webp";
-import hero3 from "@/assets/hero-3.webp";
-import hero4 from "@/assets/hero-4.webp";
-import { apiClient } from "@/lib/api/client";
+import { Search, PlayCircle, Users } from "lucide-react";
+import hero1 from "@/assets/optimized/hero-1.webp";
+import hero2 from "@/assets/optimized/hero-2.webp";
+import hero3 from "@/assets/optimized/hero-3.webp";
+import hero4 from "@/assets/optimized/hero-4.webp";
 import { EnrollmentModal } from "@/components/site/EnrollmentModal";
-import { CourseThumb } from "@/components/site/CourseThumb";
 import { useAuth } from "@/contexts/AuthContext";
-
-// Type definitions
-interface Course {
-  id: string;
-  slug: string;
-  title: string;
-  instructor: string;
-  category: string;
-  level?: string;
-  duration: string;
-  students: number;
-  rating?: number;
-  reviews?: number;
-  certificate?: boolean;
-  price?: string;
-  image: string;
-  thumbnail?: string | null;
-  color: string;
-  description: string;
-  progress?: number;
-  modules: number;
-}
-
-interface APIResponse<T> {
-  count: number;
-  next: string | null;
-  previous: string | null;
-  results: T[];
-}
+import type { Course } from "@/lib/api/types";
 
 type CourseCategory = "All" | "Engineering" | "Data & AI" | "Design" | "Infrastructure";
 
 // Helper functions
-const getString = (value: any): string => {
+const isRecord = (value: unknown): value is Record<string, unknown> =>
+  typeof value === "object" && value !== null;
+
+const getString = (value: unknown): string => {
   if (!value) return "";
   if (typeof value === "string") return value;
-  if (typeof value === "object") {
-    return value.name || value.title || value.label || "";
+  if (isRecord(value)) {
+    for (const key of ["name", "title", "label"]) {
+      if (typeof value[key] === "string") return value[key];
+    }
   }
   return String(value);
 };
@@ -66,27 +33,31 @@ const getString = (value: any): string => {
 // Format instructor name from "john.kiggundu" to "John Kiggundu"
 const formatInstructorName = (name: string): string => {
   if (!name) return "";
-  
+
   // Split by dot or underscore or space
   const parts = name.split(/[._\s]+/);
-  
+
   // Capitalize each part and join with space
-  return parts
-    .map(part => part.charAt(0).toUpperCase() + part.slice(1).toLowerCase())
-    .join(" ");
+  return parts.map((part) => part.charAt(0).toUpperCase() + part.slice(1).toLowerCase()).join(" ");
 };
 
-const getInstructorName = (instructor: any): string => {
+const getInstructorName = (instructor: unknown): string => {
   if (!instructor) return "";
   if (typeof instructor === "string") {
     return formatInstructorName(instructor);
   }
-  if (typeof instructor === "object") {
-    if (instructor.first_name && instructor.last_name) {
+  if (isRecord(instructor)) {
+    if (
+      typeof instructor.first_name === "string" &&
+      typeof instructor.last_name === "string"
+    ) {
       return `${instructor.first_name} ${instructor.last_name}`;
     }
-    const name = instructor.name || instructor.username || instructor.email || "";
-    return formatInstructorName(name);
+    for (const key of ["name", "username", "email"]) {
+      if (typeof instructor[key] === "string") {
+        return formatInstructorName(instructor[key]);
+      }
+    }
   }
   return formatInstructorName(String(instructor));
 };
@@ -124,7 +95,76 @@ const getCategory = (course: Course): CourseCategory => {
   return "Engineering";
 };
 
-const fallbackImages = [hero1, hero2, hero3, hero4];
+const categories: CourseCategory[] = [
+  "All",
+  "Engineering",
+  "Data & AI",
+  "Design",
+  "Infrastructure",
+];
+
+const demoCourses: Course[] = [
+  {
+    id: "python-data-science",
+    slug: "python-data-science",
+    title: "Complete Python for Data Science & Machine Learning",
+    instructor: "Dr. Sarah Jenkins",
+    category: "Data Science",
+    duration: "12 weeks",
+    students: 1200,
+    price: 49,
+    image: hero1,
+    thumbnail: null,
+    color: "#2F7F43",
+    description: "Learn Python, data analysis, and machine learning through practical projects.",
+    modules: 24,
+  },
+  {
+    id: "figma-design",
+    slug: "figma-design",
+    title: "Mastering Figma: From Wireframes to Prototypes",
+    instructor: "Marcus Chen",
+    category: "UI/UX Design",
+    duration: "8 weeks",
+    students: 3400,
+    price: 0,
+    image: hero2,
+    thumbnail: null,
+    color: "#9C27B0",
+    description: "Build modern interface design skills, from first sketch to interactive prototype.",
+    modules: 18,
+  },
+  {
+    id: "full-stack-react",
+    slug: "full-stack-react",
+    title: "Full-Stack React & Node.js Bootcamp",
+    instructor: "Elena Rodriguez",
+    category: "Web Development",
+    duration: "16 weeks",
+    students: 850,
+    price: 39,
+    image: hero3,
+    thumbnail: null,
+    color: "#2196F3",
+    description: "Create full-stack web applications using React, Node.js, and modern tooling.",
+    modules: 42,
+  },
+  {
+    id: "cloud-fundamentals",
+    slug: "cloud-fundamentals",
+    title: "Cloud Computing & Infrastructure Fundamentals",
+    instructor: "James Okello",
+    category: "Infrastructure",
+    duration: "10 weeks",
+    students: 2100,
+    price: 35,
+    image: hero4,
+    thumbnail: null,
+    color: "#FF9800",
+    description: "Understand cloud platforms, deployment workflows, and infrastructure essentials.",
+    modules: 20,
+  },
+];
 
 // Route definition
 export const Route = createFileRoute("/courses")({
@@ -143,111 +183,13 @@ export const Route = createFileRoute("/courses")({
 
 function CoursesPage() {
   const [search, setSearch] = useState("");
-  const [category, setCategory] = useState<string>("All");
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
-  const [courses, setCourses] = useState<Course[]>([]);
-  const [categories, setCategories] = useState<string[]>([]);
-  const [retry, setRetry] = useState(0);
+  const [category, setCategory] = useState<CourseCategory>("All");
   const [enrollCourse, setEnrollCourse] = useState<Course | null>(null);
   const [enrollOpen, setEnrollOpen] = useState(false);
   const { isEnrolled } = useAuth();
 
-  // Fetch categories from API
-  useEffect(() => {
-    const fetchCategories = async () => {
-      try {
-        const response = await apiClient<any>("/courses/categories/");
-        console.log("Categories API full response:", response);
-        
-        let categoryNames: string[] = [];
-
-        // Try different response formats
-        if (Array.isArray(response)) {
-          // If response is an array
-          categoryNames = response.map((item: any) => {
-            if (typeof item === "string") return item;
-            if (typeof item === "object") {
-              return item.name || item.title || item.category || item.slug || String(item);
-            }
-            return String(item);
-          });
-        } else if (response?.results && Array.isArray(response.results)) {
-          // If response has results array
-          categoryNames = response.results.map((item: any) => {
-            if (typeof item === "string") return item;
-            if (typeof item === "object") {
-              return item.name || item.title || item.category || item.slug || String(item);
-            }
-            return String(item);
-          });
-        } else if (response?.data && Array.isArray(response.data)) {
-          // If response has data array
-          categoryNames = response.data.map((item: any) => {
-            if (typeof item === "string") return item;
-            if (typeof item === "object") {
-              return item.name || item.title || item.category || item.slug || String(item);
-            }
-            return String(item);
-          });
-        } else if (typeof response === "object") {
-          // If response is an object with key-value pairs
-          categoryNames = Object.values(response)
-            .filter((val) => typeof val === "string" || typeof val === "object")
-            .map((item: any) => {
-              if (typeof item === "string") return item;
-              return item?.name || item?.title || item?.category || item?.slug || String(item);
-            });
-        }
-
-        // Filter out empty strings and duplicates
-        const cleanList = categoryNames
-          .filter((cat) => cat && cat.trim().length > 0)
-          .filter((cat, index, self) => self.indexOf(cat) === index);
-
-        // Add "All" at the beginning
-        const finalList = ["All", ...cleanList];
-        
-        console.log("Processed categories:", finalList);
-        
-        // Only update if we got categories back
-        if (finalList.length > 1) {
-          setCategories(finalList);
-        } else {
-          // If no categories found, use default hardcoded list as fallback
-          setCategories(["All", "Engineering", "Data & AI", "Design", "Infrastructure"]);
-        }
-      } catch (err) {
-        console.error("Failed to fetch categories:", err);
-        // Use default categories as fallback
-        setCategories(["All", "Engineering", "Data & AI", "Design", "Infrastructure"]);
-      }
-    };
-    fetchCategories();
-  }, []);
-
-  // Fetch courses from API
-  useEffect(() => {
-    const fetchCourses = async () => {
-      try {
-        setLoading(true);
-        setError(null);
-        const response = await apiClient<APIResponse<Course>>("/courses/");
-        console.log("Courses API response:", response);
-        setCourses(response?.results || []);
-      } catch (err) {
-        console.error("Failed to fetch courses:", err);
-        setError("Unable to load courses. Please try again.");
-        setCourses([]);
-      } finally {
-        setLoading(false);
-      }
-    };
-    fetchCourses();
-  }, [retry]);
-
   const filtered = useMemo(() => {
-    return courses.filter((course) => {
+    return demoCourses.filter((course) => {
       const catMatch = category === "All" || getCategory(course) === category;
       const searchLower = search.toLowerCase();
       const titleMatch = course.title?.toLowerCase().includes(searchLower) || false;
@@ -257,153 +199,140 @@ function CoursesPage() {
         .includes(searchLower);
       return catMatch && (titleMatch || descMatch || instructorMatch);
     });
-  }, [search, category, courses]);
+  }, [search, category]);
 
-  const handleCardClick = (course: Course) => {
-    window.location.href = "https://techbridge-student.vercel.app/";
-  };
-
-  const handleEnrollClick = (e: React.MouseEvent, course: Course) => {
-    e.stopPropagation();
+  const openEnrollment = (course: Course) => {
     setEnrollCourse(course);
     setEnrollOpen(true);
   };
 
-  if (loading) {
-    return (
-      <SiteLayout solidNav>
-        <div className="min-h-[60vh] flex items-center justify-center">
-          <div className="text-center">
-            <Loader2 className="h-12 w-12 animate-spin text-accent mx-auto" />
-            <p className="mt-4 text-muted-foreground">Loading programs...</p>
-          </div>
-        </div>
-      </SiteLayout>
-    );
-  }
-
-  if (error) {
-    return (
-      <SiteLayout solidNav>
-        <PageHeader
-          eyebrow="Programs"
-          title="Programs that lead to real careers."
-          subtitle="Full-time, part-time, and short-form programs across engineering, data, design, and infrastructure."
-        />
-        <section className="py-16 bg-white">
-          <div className="container-x">
-            <div className="text-center py-16 max-w-md mx-auto">
-              <AlertCircle className="h-12 w-12 text-red-500 mx-auto mb-4" />
-              <h3 className="text-xl font-semibold text-primary mb-2">Unable to Load Programs</h3>
-              <p className="text-muted-foreground">{error}</p>
-              <button
-                onClick={() => setRetry((r) => r + 1)}
-                className="mt-4 px-6 py-2 bg-accent text-white rounded-sm hover:bg-accent/90 inline-flex items-center gap-2"
-              >
-                <RefreshCw className="h-4 w-4" />
-                Retry
-              </button>
-            </div>
-          </div>
-        </section>
-        <ContactCTA />
-      </SiteLayout>
-    );
-  }
-
   return (
     <SiteLayout solidNav>
-      <PageHeader
-        eyebrow="Programs"
-        title="Programs that lead to real careers."
-        subtitle="Full-time, part-time, and short-form programs across engineering, data, design, and infrastructure."
-      />
-
-      <section className="py-16 md:py-20 bg-white">
+      <section className="bg-[#F8FAFC] pb-20 pt-28 md:pb-24 md:pt-36">
         <div className="container-x">
-          {/* Search Bar - Full width, above categories */}
-          <div className="relative w-full">
-            <Search className="absolute left-4 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-            <input
-              type="search"
-              value={search}
-              onChange={(e) => setSearch(e.target.value)}
-              placeholder="Search programs..."
-              className="w-full h-12 pl-11 pr-4 rounded-sm border border-border bg-white text-primary placeholder:text-muted-foreground focus:outline-none focus:border-accent transition-colors"
-            />
+          <div className="mb-10 max-w-2xl">
+            <p className="text-sm font-semibold uppercase tracking-[0.16em] text-[#2F6B3F]">
+              TechBridge Courses
+            </p>
+            <h1 className="mt-4 text-4xl font-bold leading-[1.1] text-[#1E293B] md:text-5xl">
+              Find a program for your next step.
+            </h1>
+            <p className="mt-4 text-base leading-relaxed text-[#64748B] md:text-lg">
+              Browse practical courses taught by instructors with industry experience.
+            </p>
           </div>
 
-          {courses.length === 0 && !loading && !error && (
-            <div className="text-center py-16">
-              <p className="text-muted-foreground">No courses available at the moment.</p>
+          <div className="rounded-[24px] border border-gray-100 bg-white p-4 shadow-[0_10px_30px_rgba(0,0,0,0.05)] md:p-6">
+            <div className="relative w-full">
+              <Search className="absolute left-4 top-1/2 h-4 w-4 -translate-y-1/2 text-[#64748B]" />
+              <input
+                type="search"
+                value={search}
+                onChange={(e) => setSearch(e.target.value)}
+                placeholder="Search courses..."
+                className="h-12 w-full rounded-xl border border-gray-200 bg-[#F8FAFC] pl-11 pr-4 text-[#1E293B] placeholder:text-[#64748B] transition-colors focus:border-[#2F7F43] focus:outline-none focus:ring-4 focus:ring-green-700/10"
+              />
             </div>
-          )}
+            <div className="mt-4 flex flex-wrap gap-2" aria-label="Filter by category">
+              {categories.map((item) => (
+                <button
+                  key={item}
+                  type="button"
+                  onClick={() => setCategory(item)}
+                  aria-pressed={category === item}
+                  className={`rounded-full px-4 py-2 text-sm font-semibold transition-colors ${
+                    category === item
+                      ? "bg-[#2F7F43] text-white"
+                      : "bg-[#F1F5F9] text-[#64748B] hover:bg-[#E8F5E9] hover:text-[#2F7F43]"
+                  }`}
+                >
+                  {item}
+                </button>
+              ))}
+            </div>
+          </div>
 
           <div className="mt-8 grid gap-8 md:grid-cols-2 lg:grid-cols-3">
             {filtered.map((course, i) => {
+              const isFree =
+                course.price === 0 ||
+                (typeof course.price === "string" && course.price.trim().toLowerCase() === "free");
+              const tutorName = getInstructorName(course.instructor);
+              const initials = tutorName
+                .split(/\s+/)
+                .slice(0, 2)
+                .map((part) => part[0])
+                .join("")
+                .toUpperCase();
+              const studentCount =
+                course.students >= 1000
+                  ? `${(course.students / 1000).toFixed(1).replace(/\.0$/, "")}k`
+                  : String(course.students);
+              const enrolled = isEnrolled(course.id);
+
               return (
-                <Reveal key={course.id || i} delay={i * 0.04}>
+                <Reveal key={course.id} delay={i * 0.05}>
                   <article
-                    onClick={() => handleCardClick(course)}
-                    className="group bg-white rounded-sm overflow-hidden border border-border hover:border-accent/40 transition-all hover:shadow-md h-full flex flex-col cursor-pointer"
+                    onClick={() => openEnrollment(course)}
+                    onKeyDown={(event) => {
+                      if (event.key === "Enter" || event.key === " ") {
+                        event.preventDefault();
+                        openEnrollment(course);
+                      }
+                    }}
+                    role="button"
+                    tabIndex={0}
+                    aria-label={`${enrolled ? "View enrollment for" : "Enroll in"} ${course.title}`}
+                    className="group flex h-full cursor-pointer flex-col overflow-hidden rounded-2xl border border-gray-200 bg-white shadow-[0_10px_30px_rgba(0,0,0,0.05)] transition-all duration-300 hover:-translate-y-2 hover:border-green-500/30 hover:shadow-[0_20px_40px_rgba(0,0,0,0.08)] focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-green-700/20"
                   >
-                    <div className="relative aspect-[16/10] overflow-hidden">
-                      <CourseThumb
-                        variant={getCategory(course).toLowerCase()}
-                        color={course.color}
-                        thumbnail={course.thumbnail || course.image}
-                        title={course.title}
-                        className="h-full"
-                        fallbackSrc={fallbackImages[i % fallbackImages.length]}
+                    <div className="relative h-52 overflow-hidden">
+                      <img
+                        src={course.image}
+                        alt={course.title}
+                        width={800}
+                        height={500}
+                        loading="lazy"
+                        decoding="async"
+                        className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
                       />
-                      <div className="absolute top-4 right-4 text-[10px] uppercase tracking-widest bg-primary/90 text-white px-3 py-1 rounded-sm">
-                        {getCategory(course)}
-                      </div>
-                      {course.rating && (
-                        <div className="absolute bottom-4 left-4 bg-black/70 text-white text-xs px-2 py-1 rounded-sm flex items-center gap-1">
-                          <span>★</span>
-                          <span>{course.rating.toFixed(1)}</span>
-                        </div>
-                      )}
-                      {course.enrolled_count && (
-                        <div className="absolute bottom-4 right-4 bg-black/70 text-white text-xs px-2 py-1 rounded-sm">
-                          {course.enrolled_count.toLocaleString()} enrolled
-                        </div>
-                      )}
+                      <span className="absolute left-4 top-4 rounded-full bg-white/95 px-4 py-1.5 text-xs font-semibold text-[#1E293B] shadow-sm backdrop-blur-sm">
+                        {course.category}
+                      </span>
+                      <span
+                        className={`absolute bottom-4 right-4 rounded-xl px-4 py-2 text-sm font-bold text-white shadow-lg ${
+                          isFree
+                            ? "bg-[#3B82F6] shadow-blue-500/40"
+                            : "bg-[#4CAF50] shadow-green-500/40"
+                        }`}
+                      >
+                        {isFree ? "Free" : `$${course.price} one-time`}
+                      </span>
                     </div>
 
-                    <div className="p-7 flex flex-col flex-1">
-                      <div className="flex items-center gap-2 text-xs text-muted-foreground">
-                        <Clock className="h-3.5 w-3.5" />
-                        {course.duration || "Flexible duration"}
+                    <div className="flex flex-1 flex-col p-6">
+                      <h2 className="mb-5 line-clamp-2 text-xl font-semibold leading-snug text-[#1E293B]">
+                        {course.title}
+                      </h2>
+
+                      <div className="mb-6 flex items-center gap-3">
+                        <span
+                          aria-hidden="true"
+                          className="grid h-8 w-8 shrink-0 place-items-center rounded-full bg-[#E8F5E9] text-xs font-semibold text-[#2F7F43]"
+                        >
+                          {initials}
+                        </span>
+                        <span className="text-sm font-medium text-[#64748B]">{tutorName}</span>
                       </div>
 
-                      <h3 className="mt-3 text-xl text-primary font-medium line-clamp-2">
-                        {course.title}
-                      </h3>
-
-                      <p className="mt-3 text-sm leading-relaxed text-foreground flex-1 line-clamp-3">
-                        {course.description}
-                      </p>
-
-                      {getInstructorName(course.instructor) && (
-                        <p className="mt-2 text-xs text-muted-foreground">
-                          Instructor: {getInstructorName(course.instructor)}
-                        </p>
-                      )}
-
-                      <div className="mt-4 pt-4 border-t border-border">
-                        <button
-                          onClick={(e) => handleEnrollClick(e, course)}
-                          className={`w-full inline-flex items-center justify-center gap-1.5 text-sm font-medium px-4 py-2.5 rounded-sm transition-colors ${
-                            isEnrolled(course.id)
-                              ? "bg-accent/10 text-accent border border-accent/20"
-                              : "bg-primary text-white hover:bg-primary/90"
-                          }`}
-                        >
-                          <UserPlus className="h-4 w-4" />
-                          {isEnrolled(course.id) ? "Enrolled" : "Enroll"}
-                        </button>
+                      <div className="mt-auto flex items-center justify-between border-t border-gray-100 pt-5 text-sm font-medium text-[#64748B]">
+                        <span className="flex items-center gap-2">
+                          <PlayCircle size={18} className="text-[#4CAF50]" />
+                          {course.modules} Lessons
+                        </span>
+                        <span className="flex items-center gap-2">
+                          <Users size={18} className="text-[#4CAF50]" />
+                          {studentCount} Students
+                        </span>
                       </div>
                     </div>
                   </article>
@@ -411,14 +340,14 @@ function CoursesPage() {
               );
             })}
 
-            {filtered.length === 0 && courses.length > 0 && (
-              <div className="col-span-full text-center py-16">
-                <Search className="h-12 w-12 text-muted-foreground mx-auto mb-4 opacity-50" />
-                <h3 className="text-xl font-semibold text-primary mb-2">No programs found</h3>
-                <p className="text-muted-foreground">
+            {filtered.length === 0 && (
+              <div className="col-span-full rounded-[24px] bg-white py-16 text-center">
+                <Search className="mx-auto mb-4 h-12 w-12 text-[#64748B] opacity-50" />
+                <h2 className="mb-2 text-xl font-semibold text-[#1E293B]">No courses found</h2>
+                <p className="text-[#64748B]">
                   {search
-                    ? `No programs match "${search}".`
-                    : "No programs available in this category."}
+                    ? `No courses match "${search}".`
+                    : "No courses available in this category."}
                 </p>
                 {(search || category !== "All") && (
                   <button
@@ -426,7 +355,7 @@ function CoursesPage() {
                       setSearch("");
                       setCategory("All");
                     }}
-                    className="mt-4 text-accent hover:underline text-sm"
+                    className="mt-4 text-sm font-semibold text-[#2F7F43] hover:underline"
                   >
                     Clear all filters
                   </button>

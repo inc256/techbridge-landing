@@ -5,6 +5,8 @@ export interface Course {
   slug: string;
   title: string;
   instructor: string;
+  instructor_image?: string | null;
+  instructor_avatar?: string | null;
   category: string;
   level?: string;
   duration: string;
@@ -12,7 +14,8 @@ export interface Course {
   rating?: number;
   reviews?: number;
   certificate?: boolean;
-  price?: string;
+  price?: string | number;
+  enrolled_count?: number;
   image: string;
   thumbnail?: string | null;
   color: string;

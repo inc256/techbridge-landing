@@ -5,6 +5,7 @@ import {
   AboutPreview,
   Stats,
   FeaturedPrograms,
+  TopCategories,
   WhyChoose,
   Admissions,
   Testimonials,
@@ -39,9 +40,10 @@ function Home() {
   return (
     <SiteLayout>
       <Hero />
+      <div aria-hidden="true" className="h-[10svh] bg-white" />
+      <TopCategories />
       <WhyChoose />
       <FeaturedPrograms />
-      {/* <Gallery /> */}
       <ContactCTA />
     </SiteLayout>
   );

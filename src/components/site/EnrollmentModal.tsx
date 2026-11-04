@@ -20,7 +20,7 @@ interface EnrollmentModalProps {
     id: string;
     title: string;
     duration: string;
-    price?: number;
+    price?: number | string;
   };
 }
 
@@ -64,7 +64,7 @@ export function EnrollmentModal({ open, onOpenChange, course }: EnrollmentModalP
             <DialogHeader>
               <DialogTitle>Enroll in {course.title}</DialogTitle>
               <DialogDescription>
-                {course.price ? `$${course.price} · ` : "Free · "}
+                {course.price ? `$${course.price} one-time · ` : "Free · "}
                 {course.duration}
               </DialogDescription>
             </DialogHeader>

@@ -1,25 +1,14 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { SiteLayout } from "@/components/site/SiteLayout";
-import { PageHeader } from "@/components/site/PageHeader";
 import { Reveal } from "@/components/site/Reveal";
 import { ContactCTA } from "@/components/site/sections";
-import aboutImg from "@/assets/hero-4.webp";
-import hero1 from "@/assets/hero-1.webp";
-import hero2 from "@/assets/hero-2.webp";
-import hero3 from "@/assets/hero-3.webp";
-import hero4 from "@/assets/hero-4.webp";
-import { 
-  Target, 
-  Compass, 
-  Heart, 
+import aboutImg from "@/assets/optimized/hero-4.webp";
+import hero1 from "@/assets/optimized/hero-1.webp";
+import hero2 from "@/assets/optimized/hero-2.webp";
+import hero3 from "@/assets/optimized/hero-3.webp";
+import hero4 from "@/assets/optimized/hero-4.webp";
+import {
   Award,
-  Laptop,
-  Code2,
-  Palette,
-  Database,
-  Megaphone,
-  Briefcase,
-  BookOpen,
   Trophy,
   Clock,
   GraduationCap,
@@ -28,7 +17,7 @@ import {
   Sparkles,
   CheckCircle,
   UserPlus,
-  ArrowRight
+  ArrowRight,
 } from "lucide-react";
 
 export const Route = createFileRoute("/about")({
@@ -69,25 +58,48 @@ function AboutPage() {
   return (
     <SiteLayout solidNav>
 
-      {/* Hero / Introduction */}
-      <section className="py-16 md:py-24 lg:py-32 bg-white">
+      {/* Welcome / Introduction */}
+      <section className="bg-white pb-16 pt-28 md:pb-24 md:pt-36">
         <div className="container-x">
-          <div className="max-w-4xl mx-auto text-center px-4 sm:px-6">
+          <div className="grid items-center gap-10 lg:grid-cols-[0.85fr_1.15fr] lg:gap-16">
             <Reveal>
-              <span className="eyebrow">Welcome to TechBridge</span>
-              <h1 className="mt-4 text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-semibold text-primary leading-[1.05]">
-                Your gateway to practical, accessible, and future-ready digital skills.
-              </h1>
-              <p className="mt-4 sm:mt-6 text-base sm:text-lg md:text-xl text-foreground/80 leading-relaxed max-w-3xl mx-auto px-2">
-                We help learners build the knowledge and confidence they need to succeed in school, work, business, and the digital world.
-              </p>
-              <div className="mt-6 sm:mt-8 flex flex-col sm:flex-row flex-wrap justify-center gap-3 sm:gap-4">
-                <button onClick={handleExploreClick} className="btn-primary text-sm sm:text-base">
-                  Explore Programs <ArrowRight className="h-4 w-4" />
-                </button>
-                <button onClick={handleStudentClick} className="btn-secondary text-sm sm:text-base">
-                  Get Started
-                </button>
+              <div className="max-w-xl">
+                <p className="text-sm font-semibold uppercase tracking-[0.16em] text-[#2F7F43]">
+                  Welcome to TechBridge
+                </p>
+                <h1 className="mt-5 text-4xl font-bold leading-[1.08] tracking-tight text-[#1E293B] sm:text-5xl lg:text-[3.5rem]">
+                  Opening doors to digital opportunity.
+                </h1>
+                <p className="mt-6 text-base leading-relaxed text-[#64748B] md:text-lg">
+                  We help learners build the knowledge and confidence they need to succeed in
+                  school, work, business, and the digital world.
+                </p>
+                <div className="mt-8 flex flex-col gap-3 sm:flex-row">
+                  <button onClick={handleExploreClick} className="btn-primary">
+                    Explore Programs <ArrowRight className="h-4 w-4" />
+                  </button>
+                  <button onClick={handleStudentClick} className="btn-secondary">
+                    Get Started
+                  </button>
+                </div>
+              </div>
+            </Reveal>
+
+            <Reveal delay={0.1}>
+              <div className="relative">
+                <img
+                  src={aboutImg}
+                  alt="TechBridge learners building practical skills"
+                  width={1200}
+                  height={800}
+                  loading="eager"
+                  decoding="async"
+                  className="aspect-[4/3] w-full rounded-[28px] object-cover"
+                />
+                <div className="absolute -bottom-5 left-5 rounded-2xl border border-gray-100 bg-white px-5 py-4 shadow-lg sm:bottom-6 sm:left-6">
+                  <p className="text-sm font-bold text-[#1E293B]">Learn by doing</p>
+                  <p className="mt-1 text-xs text-[#64748B]">Skills for a changing world</p>
+                </div>
               </div>
             </Reveal>
           </div>
@@ -95,7 +107,7 @@ function AboutPage() {
       </section>
 
       {/* Our Mission */}
-      <section className="py-16 md:py-24 lg:py-32 bg-[color:var(--surface)]">
+      <section className="bg-[#F8FAFC] py-16 md:py-24 lg:py-28">
         <div className="container-x">
           <div className="grid gap-10 md:gap-16 lg:grid-cols-2 items-center px-4 sm:px-6">
             <Reveal>
@@ -107,7 +119,7 @@ function AboutPage() {
                   height={600}
                   loading="lazy"
                   decoding="async"
-                  className="w-full h-[250px] sm:h-[350px] md:h-[400px] lg:h-[500px] object-cover rounded-sm"
+                  className="w-full h-[250px] sm:h-[350px] md:h-[400px] lg:h-[500px] object-cover rounded-[28px] shadow-xl"
                 />
               </div>
             </Reveal>
@@ -138,50 +150,8 @@ function AboutPage() {
         </div>
       </section>
 
-      {/* What We Offer */}
-      <section className="py-16 md:py-24 lg:py-32 bg-white">
-        <div className="container-x px-4 sm:px-6">
-          <Reveal>
-            <div className="max-w-3xl">
-              <span className="eyebrow">What We Offer</span>
-              <h2 className="mt-4 text-3xl sm:text-4xl md:text-5xl font-semibold text-primary leading-[1.05]">
-                Comprehensive programs for every path.
-              </h2>
-              <p className="mt-3 sm:mt-4 text-base sm:text-lg text-foreground/80">
-                From foundational skills to advanced specializations, we have something for everyone.
-              </p>
-            </div>
-          </Reveal>
-          <div className="mt-12 sm:mt-16 grid gap-4 sm:gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
-            {[
-              { icon: Laptop, title: "Technology & Computer Skills", desc: "Master essential computing skills for the modern workplace." },
-              { icon: Code2, title: "Web Development", desc: "Build websites and web applications from the ground up." },
-              { icon: Palette, title: "Graphic Design", desc: "Develop your creative skills with professional design tools." },
-              { icon: Database, title: "Data & Digital Skills", desc: "Learn to work with data, analytics, and digital tools." },
-              { icon: Megaphone, title: "Digital Marketing", desc: "Reach audiences and build brands in the digital space." },
-              { icon: Briefcase, title: "Career & Professional Skills", desc: "Prepare for interviews, networking, and career growth." },
-              { icon: BookOpen, title: "Study Resources", desc: "Access comprehensive study materials and learning guides." },
-              { icon: Trophy, title: "Practical Projects", desc: "Build a portfolio with real-world projects and assessments." },
-            ].map((item, i) => (
-              <Reveal key={item.title} delay={i * 0.05}>
-                <div 
-                  onClick={handleStudentClick}
-                  className="group bg-[color:var(--surface)] p-4 sm:p-6 rounded-sm hover:shadow-md transition-all cursor-pointer hover:border-accent/40 border border-border"
-                >
-                  <div className="h-10 w-10 sm:h-12 sm:w-12 grid place-items-center rounded-sm bg-accent/10 text-accent group-hover:bg-accent group-hover:text-white transition-colors">
-                    <item.icon className="h-4 w-4 sm:h-5 sm:w-5" />
-                  </div>
-                  <h3 className="mt-3 sm:mt-4 text-base sm:text-lg font-medium text-primary">{item.title}</h3>
-                  <p className="mt-1 sm:mt-2 text-xs sm:text-sm text-foreground/80 leading-relaxed">{item.desc}</p>
-                </div>
-              </Reveal>
-            ))}
-          </div>
-        </div>
-      </section>
-
       {/* Why TechBridge */}
-      <section className="py-16 md:py-24 lg:py-32 bg-[color:var(--surface)]">
+      <section className="bg-[#E6F7EC] py-16 md:py-24 lg:py-28">
         <div className="container-x px-4 sm:px-6">
           <Reveal>
             <div className="max-w-3xl">
@@ -203,9 +173,9 @@ function AboutPage() {
               <Reveal key={item.title} delay={i * 0.06}>
                 <div 
                   onClick={handleStudentClick}
-                  className="bg-white p-6 sm:p-8 rounded-sm border border-border hover:border-accent/40 transition-all hover:shadow-md cursor-pointer group"
+                  className="group h-full rounded-[20px] border border-transparent bg-white p-6 transition-all hover:-translate-y-1.5 hover:border-green-500/20 hover:shadow-[0_20px_40px_rgba(76,175,80,0.15)] sm:p-8"
                 >
-                  <div className="h-10 w-10 sm:h-12 sm:w-12 grid place-items-center rounded-sm bg-accent/10 text-accent group-hover:bg-accent group-hover:text-white transition-colors">
+                  <div className="grid h-12 w-12 place-items-center rounded-2xl bg-[#E8F5E9] text-[#2F7F43] transition-colors group-hover:bg-[#2F7F43] group-hover:text-white">
                     <item.icon className="h-4 w-4 sm:h-5 sm:w-5" />
                   </div>
                   <h3 className="mt-4 sm:mt-5 text-lg sm:text-xl text-primary">{item.title}</h3>
@@ -232,7 +202,7 @@ function AboutPage() {
               <div className="mt-6 sm:mt-8 grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
                 <button 
                   onClick={handleStudentClick}
-                  className="flex items-center gap-3 bg-[color:var(--surface)] p-4 rounded-sm hover:bg-accent/10 transition-colors cursor-pointer w-full"
+                  className="flex w-full items-center gap-3 rounded-2xl bg-[#F8FAFC] p-4 transition-colors hover:bg-[#E8F5E9]"
                 >
                   <GraduationCap className="h-5 w-5 text-accent flex-shrink-0" />
                   <span className="text-primary font-medium">Students & Learners</span>
@@ -240,7 +210,7 @@ function AboutPage() {
                 </button>
                 <button 
                   onClick={handleTutorClick}
-                  className="flex items-center gap-3 bg-[color:var(--surface)] p-4 rounded-sm hover:bg-accent/10 transition-colors cursor-pointer w-full"
+                  className="flex w-full items-center gap-3 rounded-2xl bg-[#F8FAFC] p-4 transition-colors hover:bg-[#E8F5E9]"
                 >
                   <UserPlus className="h-5 w-5 text-accent flex-shrink-0" />
                   <span className="text-primary font-medium">Tutors & Educators</span>
@@ -265,7 +235,7 @@ function AboutPage() {
                   height={300}
                   loading="lazy"
                   decoding="async"
-                  className="w-full h-40 sm:h-48 md:h-56 lg:h-64 object-cover rounded-sm"
+                  className="w-full h-40 sm:h-48 md:h-56 lg:h-64 object-cover rounded-2xl"
                 />
                 <img
                   src={hero2}
@@ -274,7 +244,7 @@ function AboutPage() {
                   height={300}
                   loading="lazy"
                   decoding="async"
-                  className="w-full h-40 sm:h-48 md:h-56 lg:h-64 object-cover rounded-sm mt-4 sm:mt-6 md:mt-8"
+                  className="w-full h-40 sm:h-48 md:h-56 lg:h-64 object-cover rounded-2xl mt-4 sm:mt-6 md:mt-8"
                 />
                 <img
                   src={hero3}
@@ -283,7 +253,7 @@ function AboutPage() {
                   height={300}
                   loading="lazy"
                   decoding="async"
-                  className="w-full h-40 sm:h-48 md:h-56 lg:h-64 object-cover rounded-sm -mt-4 sm:-mt-6 md:-mt-8"
+                  className="w-full h-40 sm:h-48 md:h-56 lg:h-64 object-cover rounded-2xl -mt-4 sm:-mt-6 md:-mt-8"
                 />
                 <img
                   src={hero4}
@@ -292,7 +262,7 @@ function AboutPage() {
                   height={300}
                   loading="lazy"
                   decoding="async"
-                  className="w-full h-40 sm:h-48 md:h-56 lg:h-64 object-cover rounded-sm"
+                  className="w-full h-40 sm:h-48 md:h-56 lg:h-64 object-cover rounded-2xl"
                 />
               </div>
             </Reveal>

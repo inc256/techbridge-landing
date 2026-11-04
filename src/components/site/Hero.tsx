@@ -2,14 +2,14 @@ import { useEffect, useState } from "react";
 import { Link } from "@tanstack/react-router";
 import { AnimatePresence, motion } from "framer-motion";
 import { ArrowRight, ArrowUpRight, ChevronLeft, ChevronRight, GraduationCap } from "lucide-react";
-import hero1 from "@/assets/hero-1.webp";
-import hero2 from "@/assets/hero-2.webp";
-import hero3 from "@/assets/hero-3.webp";
-import hero4 from "@/assets/hero-4.webp";
-import hero5 from "@/assets/hero-5.webp";
-import hero6 from "@/assets/hero-6.webp";
-import hero7 from "@/assets/hero-7.webp";
-import hero8 from "@/assets/hero-8.webp";
+import hero1 from "@/assets/optimized/hero-1.webp";
+import hero2 from "@/assets/optimized/hero-2.webp";
+import hero3 from "@/assets/optimized/hero-3.webp";
+import hero4 from "@/assets/optimized/hero-4.webp";
+import hero5 from "@/assets/optimized/hero-5.webp";
+import hero6 from "@/assets/optimized/hero-6.webp";
+import hero7 from "@/assets/optimized/hero-7.webp";
+import hero8 from "@/assets/optimized/hero-8.webp";
 
 const slides = [hero7, hero2, hero3, hero4, hero5, hero6, hero8, hero1];
 
@@ -39,17 +39,17 @@ export function Hero() {
   return (
     <section
       aria-labelledby="home-hero-title"
-      className="relative w-full overflow-hidden bg-[#BFD8C3]"
+      className="relative min-h-[90svh] w-full overflow-hidden bg-[#BFD8C3]"
       style={{ clipPath: "ellipse(150% 100% at 50% 0%)" }}
     >
-      <div className="container-x grid items-center gap-12 pb-28 pt-32 md:pt-36 lg:min-h-[740px] lg:grid-cols-[0.9fr_1.1fr] lg:gap-8 lg:pb-32">
+      <div className="container-x grid min-h-[90svh] items-center gap-12 pb-24 pt-24 md:grid-cols-[0.9fr_1.1fr] md:gap-6 md:py-20 lg:gap-8 lg:py-24">
         <div className="relative z-10 text-center lg:text-left">
           <p className="mb-5 text-sm font-semibold uppercase tracking-[0.16em] text-[#2F6B3F]">
             TechBridge Skills Hub
           </p>
           <h1
             id="home-hero-title"
-            className="text-4xl font-bold leading-[1.12] text-[#1E293B] md:text-5xl lg:text-[4rem]"
+            className="text-4xl font-bold leading-[1.12] text-[#1E293B] md:text-4xl lg:text-[4rem]"
             style={{ letterSpacing: "-0.03em" }}
           >
             Grow your skills.
@@ -85,11 +85,11 @@ export function Hero() {
           </p>
         </div>
 
-        <div className="relative mx-auto flex h-[430px] w-full max-w-[620px] items-center justify-center sm:h-[520px] lg:h-[600px]">
-          <div className="absolute h-[300px] w-[300px] rounded-full bg-[#2F7F43] sm:h-[400px] sm:w-[400px] lg:h-[470px] lg:w-[470px]" />
+        <div className="relative mx-auto flex h-[360px] w-full max-w-[620px] items-center justify-center sm:h-[420px] md:h-[min(60svh,440px)] md:min-h-[360px] lg:h-[min(65svh,560px)] lg:min-h-[430px]">
+          <div className="absolute h-[min(76vw,300px)] w-[min(76vw,300px)] rounded-full bg-[#2F7F43] sm:h-[400px] sm:w-[400px] lg:h-[470px] lg:w-[470px]" />
           <div className="absolute h-[370px] w-[370px] rounded-full border-2 border-dashed border-[#2F7F43]/70 sm:h-[490px] sm:w-[490px] lg:h-[570px] lg:w-[570px]" />
 
-          <div className="relative z-10 h-[350px] w-[min(68vw,340px)] overflow-hidden rounded-2xl shadow-2xl sm:h-[460px] sm:w-[360px] lg:h-[520px] lg:w-[400px]">
+          <div className="relative z-10 h-[min(69vw,270px)] w-[min(69vw,270px)] overflow-hidden rounded-full shadow-2xl sm:h-[360px] sm:w-[360px] lg:h-[424px] lg:w-[424px]">
             <AnimatePresence mode="sync">
               <motion.img
                 key={activeSlide}

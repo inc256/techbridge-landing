@@ -12,6 +12,15 @@ import type {
   APIResponse,
 } from "./types";
 
+export const COURSES_QUERY_KEY = ["courses"] as const;
+
+export function fetchCourses(signal?: AbortSignal) {
+  return apiClient<APIResponse<Course>>("/courses/", {
+    signal,
+    timeoutMs: 6000,
+  });
+}
+
 export function useSiteContent() {
   return apiClient<SiteContent>("/site-content");
 }
@@ -42,7 +51,7 @@ export function useAdmissions() {
 
 // New function to fetch courses from the API
 export function useCourses() {
-  return apiClient<APIResponse<Course>>("/courses/");
+  return fetchCourses();
 }
 
 // Function to fetch a single course by slug

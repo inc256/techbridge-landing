@@ -1,5 +1,6 @@
 // src/lib/api/client.ts
 export const API_BASE = "https://techbridge-backend-rust.vercel.app/api/v1";
+const DEFAULT_TIMEOUT_MS = 6000;
 
 export interface ApiClientOptions {
   headers?: Record<string, string>;
@@ -10,18 +11,20 @@ export interface ApiClientOptions {
 export async function apiClient<T>(path: string, options: ApiClientOptions = {}): Promise<T> {
   const url = `${API_BASE.replace(/\/$/, "")}/${path.replace(/^\//, "")}`;
   const controller = new AbortController();
-  const timeout = setTimeout(() => controller.abort(), options.timeoutMs ?? 8000);
+  const timeout = setTimeout(() => controller.abort(), options.timeoutMs ?? DEFAULT_TIMEOUT_MS);
+  const abortFromCaller = () => controller.abort();
 
   if (options.signal) {
-    options.signal.addEventListener("abort", () => controller.abort(), { once: true });
+    if (options.signal.aborted) {
+      controller.abort();
+    } else {
+      options.signal.addEventListener("abort", abortFromCaller, { once: true });
+    }
   }
 
   try {
     const response = await fetch(url, {
-      headers: {
-        "Content-Type": "application/json",
-        ...options.headers,
-      },
+      headers: options.headers,
       signal: controller.signal,
     });
 
@@ -36,5 +39,6 @@ export async function apiClient<T>(path: string, options: ApiClientOptions = {})
     throw error;
   } finally {
     clearTimeout(timeout);
+    options.signal?.removeEventListener("abort", abortFromCaller);
   }
 }
